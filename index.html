@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f6fa">
+    <meta name="description" content="Boards brings projects, tasks, people, and progress together for Root communities.">
+    <title>Boards — Make community work move</title>
+    <link rel="icon" href="./app-icon.svg" type="image/svg+xml">
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #242333;
+        --muted: #696878;
+        --paper: #f7f6fa;
+        --card: #fff;
+        --line: #e8e6ef;
+        --accent: #655bd2;
+        --accent-soft: #eeecff;
+        font-family: Inter, "Segoe UI", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; color: var(--ink); background: var(--paper); }
+      a { color: inherit; }
+      .wrap { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+      header { height: 78px; display: flex; align-items: center; justify-content: space-between; }
+      .brand { display: flex; align-items: center; gap: 11px; font-size: 16px; font-weight: 750; letter-spacing: -.04em; text-decoration: none; }
+      .brand img { width: 36px; height: 36px; border-radius: 11px; }
+      .brand small { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; font-weight: 550; letter-spacing: 0; }
+      .top-link { color: var(--muted); font-size: 12px; font-weight: 650; text-decoration: none; }
+      .top-link:hover { color: var(--accent); }
+      .hero {
+        position: relative;
+        display: grid;
+        grid-template-columns: .78fr 1.22fr;
+        gap: 36px;
+        align-items: center;
+        min-height: 490px;
+        padding: 58px 52px;
+        overflow: hidden;
+        border-radius: 24px;
+        color: #fff;
+        background: radial-gradient(circle at 88% 8%, rgba(139, 128, 240, .27), transparent 34%), #29273b;
+      }
+      .hero::after { position: absolute; right: -120px; bottom: -250px; width: 450px; height: 450px; border: 1px solid rgba(255,255,255,.08); border-radius: 50%; content: ""; }
+      .hero-copy, .hero-visual { position: relative; z-index: 1; }
+      .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: #aaa2ff; font-size: 10px; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
+      .eyebrow::before { width: 19px; height: 2px; border-radius: 2px; content: ""; background: currentColor; }
+      h1 { max-width: 480px; margin: 19px 0 16px; font-size: clamp(42px, 5.2vw, 68px); line-height: .99; letter-spacing: -.065em; }
+      .hero-copy > p { max-width: 405px; color: #c4c1d2; font-size: 15px; line-height: 1.7; }
+      .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 25px; }
+      .button { min-height: 43px; display: inline-flex; align-items: center; justify-content: center; padding: 0 15px; border: 1px solid rgba(255,255,255,.22); border-radius: 9px; color: #fff; background: rgba(255,255,255,.07); font-size: 11px; font-weight: 700; text-decoration: none; transition: transform .18s ease, background .18s ease; }
+      .button:hover { transform: translateY(-2px); background: rgba(255,255,255,.14); }
+      .button-primary { border-color: #8176ef; background: #7166df; }
+      .button-primary:hover { background: #8176ef; }
+      .trust { margin-top: 16px; color: #aaa8ba; font-size: 10px; }
+      .hero-visual { min-width: 0; padding: 12px 8px 30px 0; }
+      .shot-frame { position: relative; margin: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.2); border-radius: 13px; background: #fff; box-shadow: 0 28px 70px rgba(0,0,0,.38); transform: rotate(-2deg); }
+      .shot-frame img { width: 100%; height: auto; display: block; }
+      .theme-peek { position: absolute; right: -13px; bottom: -7px; width: 48%; overflow: hidden; border: 2px solid #fff; border-radius: 10px; background: #22212a; box-shadow: 0 13px 34px rgba(0,0,0,.42); transform: rotate(4deg); }
+      .theme-peek img { width: 100%; height: auto; display: block; }
+      .theme-peek span { position: absolute; right: 8px; bottom: 7px; padding: 5px 8px; border: 1px solid rgba(255,255,255,.16); border-radius: 20px; color: #fff; background: rgba(32,31,42,.85); font-size: 9px; font-weight: 650; }
+      .intro { max-width: 680px; padding: 78px 0 24px; margin: 0 auto; text-align: center; }
+      .intro .eyebrow { color: var(--accent); }
+      .intro h2, .gallery-heading h2 { margin: 13px 0 10px; font-size: clamp(29px, 4vw, 43px); letter-spacing: -.055em; }
+      .intro p, .gallery-heading p { margin: 0 auto; color: var(--muted); font-size: 13px; line-height: 1.7; }
+      .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 22px 0 74px; }
+      .feature { min-height: 154px; padding: 21px; border: 1px solid var(--line); border-radius: 13px; background: var(--card); }
+      .feature-mark { width: 35px; height: 35px; display: grid; place-items: center; margin-bottom: 15px; border-radius: 11px; color: var(--accent); background: var(--accent-soft); font-size: 16px; font-weight: 800; }
+      .feature:nth-child(2) .feature-mark { color: #287c5e; background: #e1f3e9; }
+      .feature:nth-child(3) .feature-mark { color: #a56521; background: #fff0dc; }
+      .feature h3 { margin: 0 0 7px; font-size: 14px; letter-spacing: -.02em; }
+      .feature p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
+      .gallery { padding: 61px 0 69px; border-top: 1px solid var(--line); }
+      .gallery-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+      .gallery-heading .eyebrow { color: var(--accent); }
+      .gallery-heading h2 { margin-bottom: 0; }
+      .gallery-heading p { max-width: 435px; margin: 0 0 3px; font-size: 12px; }
+      .gallery-section + .gallery-section { margin-top: 45px; }
+      .gallery-label { margin: 0 0 16px; color: var(--muted); font-size: 10px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+      .gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; padding: 5px 3px 9px; }
+      .gallery-card { min-width: 0; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 11px; background: #fff; box-shadow: 0 10px 26px rgba(44,39,93,.08); transition: transform .2s ease, box-shadow .2s ease; }
+      .gallery-card:nth-child(3n + 1) { transform: rotate(-1deg); }
+      .gallery-card:nth-child(3n + 2) { transform: rotate(.65deg); }
+      .gallery-card:nth-child(3n) { transform: rotate(-.35deg); }
+      .gallery-card:hover { z-index: 2; box-shadow: 0 16px 36px rgba(44,39,93,.16); transform: translateY(-4px) rotate(0); }
+      .gallery-card img { width: 100%; height: auto; display: block; }
+      .shot-caption { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 42px; padding: 9px 11px; border-top: 1px solid var(--line); color: var(--muted); font-size: 9px; }
+      .shot-caption strong { color: var(--ink); font-size: 10px; }
+      .closing { display: flex; align-items: center; justify-content: space-between; gap: 22px; padding: 30px; margin: 0 0 36px; border-radius: 16px; color: #fff; background: linear-gradient(110deg, #302d48, #494274); }
+      .closing h2 { margin: 0 0 7px; font-size: 24px; letter-spacing: -.04em; }
+      .closing p { margin: 0; color: #d0cde0; font-size: 11px; }
+      .closing .button { flex-shrink: 0; }
+      footer { display: flex; justify-content: space-between; gap: 15px; padding: 17px 0 27px; color: var(--muted); font-size: 9px; }
+      footer a { color: var(--accent); font-weight: 650; text-decoration: none; }
+      footer a:hover { text-decoration: underline; }
+      @media (max-width: 900px) {
+        .hero { grid-template-columns: 1fr 1.05fr; gap: 20px; padding: 42px 32px; }
+        .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+      }
+      @media (max-width: 650px) {
+        .wrap { width: min(100% - 28px, 1180px); }
+        header { height: 65px; }
+        .top-link { font-size: 10px; }
+        .hero { grid-template-columns: 1fr; gap: 25px; min-height: 0; padding: 35px 22px 43px; border-radius: 18px; }
+        .hero-copy > p { font-size: 13px; }
+        .hero-visual { padding: 6px 8px 25px 0; }
+        .theme-peek { right: -5px; }
+        .intro { padding: 61px 0 18px; }
+        .feature-grid { grid-template-columns: 1fr; gap: 10px; margin-bottom: 55px; }
+        .feature { min-height: 0; }
+        .gallery { padding: 48px 0 52px; }
+        .gallery-heading, .closing { align-items: flex-start; flex-direction: column; }
+        .gallery-heading { gap: 10px; }
+        .gallery-grid { grid-template-columns: 1fr; gap: 18px; padding-inline: 8px; }
+        .gallery-card { max-width: 540px; width: 100%; margin-inline: auto; }
+        .closing { padding: 24px; }
+        footer { flex-direction: column; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <a class="brand" href="#top" aria-label="Boards home">
+          <img src="./app-icon.svg" alt="">
+          <span>Boards<small>For Root communities</small></span>
+        </a>
+        <a class="top-link" href="#views">Explore the workspace ↓</a>
+      </header>
+      <main id="top">
+        <section class="hero">
+          <div class="hero-copy">
+            <span class="eyebrow">Made for Root communities</span>
+            <h1>Turn community ideas into work that moves.</h1>
+            <p>Bring projects, tasks, and people into one shared space. Make the next step clear, keep ownership visible, and see progress take shape.</p>
+            <div class="actions">
+              <a class="button button-primary" href="#views">Explore the views</a>
+              <a class="button" href="#features">Discover Boards</a>
+            </div>
+            <p class="trust">A calmer way to organise the work your community cares about.</p>
+          </div>
+          <div class="hero-visual" aria-label="Boards shown in light and dark mode">
+            <figure class="shot-frame">
+              <img src="devhost-view-board-light.png" alt="Light-mode Boards Kanban project in Root DevHost, with its workspace sidebar, four workflow columns, and task cards visible">
+            </figure>
+            <div class="theme-peek">
+              <img src="devhost-view-board-dark.png" alt="The same Boards Kanban project in dark mode, with the workspace sidebar visible">
+              <span>Light and dark themes</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="intro" id="features">
+          <span class="eyebrow">Less chasing. More making.</span>
+          <h2>Give good ideas a clear next step.</h2>
+          <p>From a first task to a shared milestone, Boards helps Root communities bring everyday work into focus and keep it moving together.</p>
+        </section>
+        <section class="feature-grid" aria-label="Boards features">
+          <article class="feature"><span class="feature-mark" aria-hidden="true">↗</span><h3>See work move</h3><p>Group tasks into project stages and move them forward as plans take shape.</p></article>
+          <article class="feature"><span class="feature-mark" aria-hidden="true">◎</span><h3>Make ownership clear</h3><p>Assign people, add subtasks, and keep priorities and due dates close to the work.</p></article>
+          <article class="feature"><span class="feature-mark" aria-hidden="true">⌁</span><h3>Keep the conversation connected</h3><p>Comments and mentions stay alongside the task, so context is easy to find.</p></article>
+        </section>
+
+        <section class="gallery" id="views">
+          <div class="gallery-heading">
+            <div><span class="eyebrow">A view for every kind of work</span><h2>More than a board.</h2></div>
+            <p>See the same shared work from different angles—from the next task to the wider schedule, team, and project picture.</p>
+          </div>
+
+          <div class="gallery-section">
+            <h3 class="gallery-label">Plan the project</h3>
+            <div class="gallery-grid">
+              <figure class="gallery-card"><img src="devhost-view-list-light.png" alt="Boards list view with task names, assignees, due dates, priorities, status, and the workspace sidebar"><figcaption class="shot-caption"><strong>Every task, at a glance.</strong><span>List</span></figcaption></figure>
+              <figure class="gallery-card"><img src="devhost-view-timeline-light.png" alt="Boards timeline showing project tasks across dates, with the workspace sidebar"><figcaption class="shot-caption"><strong>See the work ahead.</strong><span>Timeline</span></figcaption></figure>
+              <figure class="gallery-card"><img src="devhost-view-calendar-light.png" alt="Boards monthly calendar with task deadlines and the workspace sidebar"><figcaption class="shot-caption"><strong>Keep dates in view.</strong><span>Calendar</span></figcaption></figure>
+              <figure class="gallery-card"><img src="devhost-view-files-light.png" alt="Boards project files view showing an attached file and the workspace sidebar"><figcaption class="shot-caption"><strong>Find project files.</strong><span>Files</span></figcaption></figure>
+            </div>
+          </div>
+
+          <div class="gallery-section">
+            <h3 class="gallery-label">Bring your community together</h3>
+            <div class="gallery-grid">
+              <figure class="gallery-card"><img src="devhost-view-my-tasks.png" alt="Boards My tasks view listing assigned tasks and the workspace sidebar"><figcaption class="shot-caption"><strong>Your work, together.</strong><span>My tasks</span></figcaption></figure>
+              <figure class="gallery-card"><img src="devhost-view-notifications.png" alt="Boards notifications page for community task mentions, with the workspace sidebar"><figcaption class="shot-caption"><strong>Catch every mention.</strong><span>Notifications</span></figcaption></figure>
+              <figure class="gallery-card"><img src="devhost-view-workload.png" alt="Boards workload view showing task assignments by priority and the workspace sidebar"><figcaption class="shot-caption"><strong>Balance team workload.</strong><span>Workload</span></figcaption></figure>
+              <figure class="gallery-card"><img src="devhost-view-people.png" alt="Boards Your people view showing Root community members with access and the workspace sidebar"><figcaption class="shot-caption"><strong>Work with your people.</strong><span>Community</span></figcaption></figure>
+            </div>
+          </div>
+
+          <div class="gallery-section">
+            <h3 class="gallery-label">Stay in control</h3>
+            <div class="gallery-grid">
+              <figure class="gallery-card"><img src="devhost-view-task-details.png" alt="Boards task details panel showing ownership, dates, a subtask, and a comment mention beside the workspace"><figcaption class="shot-caption"><strong>Keep details close.</strong><span>Task details</span></figcaption></figure>
+              <figure class="gallery-card"><img src="devhost-view-project-colour.png" alt="Boards project colour picker showing a custom hex colour and the workspace sidebar"><figcaption class="shot-caption"><strong>Make each project yours.</strong><span>Custom colour</span></figcaption></figure>
+              <figure class="gallery-card"><img src="devhost-view-trash.png" alt="Boards Trash page explaining 30-day deleted-task retention, with the workspace sidebar"><figcaption class="shot-caption"><strong>Recover deleted tasks.</strong><span>30-day Trash</span></figcaption></figure>
+              <figure class="gallery-card"><img src="devhost-view-archived.png" alt="Boards archived projects page with restore and permanent-delete actions beside the workspace sidebar"><figcaption class="shot-caption"><strong>Archive finished projects.</strong><span>Archived projects</span></figcaption></figure>
+            </div>
+          </div>
+        </section>
+
+        <section class="closing">
+          <div><h2>Ready to get your community moving?</h2><p>Bring the next project into focus with Boards for Root.</p></div>
+          <a class="button" href="#top">Back to the top ↑</a>
+        </section>
+      </main>
+      <footer><span>Boards · Projects made clearer for Root communities.</span><span>Product screens show sample workspace content.</span><a href="./privacy-policy.html">Privacy policy</a></footer>
+    </div>
+  </body>
+</html>
